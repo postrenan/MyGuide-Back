@@ -1,26 +1,27 @@
 import { Injectable } from '@nestjs/common';
-import { CreateReviewDto } from './dto/create-review.dto';
-import { UpdateReviewDto } from './dto/update-review.dto';
+import { PrismaService } from 'prisma/prisma.service';
 
 @Injectable()
 export class ReviewService {
-  create(createReviewDto: CreateReviewDto) {
-    return 'This action adds a new review';
+  constructor(private prisma: PrismaService) {}
+
+  async getAllReviews() {
+    return this.prisma.review.findMany({ include: { user: true, shop: true } });
   }
 
-  findAll() {
-    return `This action returns all review`;
+  async getReviewById(id: number) {
+    return this.prisma.review.findUnique({ where: { id }, include: { user: true, shop: true } });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} review`;
+  async createReview(data: any) {
+    return this.prisma.review.create({ data });
   }
 
-  update(id: number, updateReviewDto: UpdateReviewDto) {
-    return `This action updates a #${id} review`;
+  async updateReview(id: number, data: any) {
+    return this.prisma.review.update({ where: { id }, data });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} review`;
+  async deleteReview(id: number) {
+    return this.prisma.review.delete({ where: { id } });
   }
 }

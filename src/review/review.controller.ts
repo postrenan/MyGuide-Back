@@ -1,34 +1,32 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
 import { ReviewService } from './review.service';
-import { CreateReviewDto } from './dto/create-review.dto';
-import { UpdateReviewDto } from './dto/update-review.dto';
 
-@Controller('review')
+@Controller('reviews')
 export class ReviewController {
-  constructor(private readonly reviewService: ReviewService) {}
-
-  @Post()
-  create(@Body() createReviewDto: CreateReviewDto) {
-    return this.reviewService.create(createReviewDto);
-  }
+  constructor(private reviewService: ReviewService) {}
 
   @Get()
-  findAll() {
-    return this.reviewService.findAll();
+  async getAllReviews() {
+    return this.reviewService.getAllReviews();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.reviewService.findOne(+id);
+  async getReviewById(@Param('id') id: number) {
+    return this.reviewService.getReviewById(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateReviewDto: UpdateReviewDto) {
-    return this.reviewService.update(+id, updateReviewDto);
+  @Post()
+  async createReview(@Body() data: any) {
+    return this.reviewService.createReview(data);
+  }
+
+  @Put(':id')
+  async updateReview(@Param('id') id: number, @Body() data: any) {
+    return this.reviewService.updateReview(id, data);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.reviewService.remove(+id);
+  async deleteReview(@Param('id') id: number) {
+    return this.reviewService.deleteReview(id);
   }
 }

@@ -1,34 +1,27 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Body, Param } from '@nestjs/common';
 import { PictureService } from './picture.service';
-import { CreatePictureDto } from './dto/create-picture.dto';
-import { UpdatePictureDto } from './dto/update-picture.dto';
 
-@Controller('picture')
+@Controller('pictures')
 export class PictureController {
-  constructor(private readonly pictureService: PictureService) {}
-
-  @Post()
-  create(@Body() createPictureDto: CreatePictureDto) {
-    return this.pictureService.create(createPictureDto);
-  }
+  constructor(private pictureService: PictureService) {}
 
   @Get()
-  findAll() {
-    return this.pictureService.findAll();
+  async getAllPictures() {
+    return this.pictureService.getAllPictures();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.pictureService.findOne(+id);
+  async getPictureById(@Param('id') id: number) {
+    return this.pictureService.getPictureById(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePictureDto: UpdatePictureDto) {
-    return this.pictureService.update(+id, updatePictureDto);
+  @Post()
+  async createPicture(@Body() data: any) {
+    return this.pictureService.createPicture(data);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.pictureService.remove(+id);
+  async deletePicture(@Param('id') id: number) {
+    return this.pictureService.deletePicture(id);
   }
 }
