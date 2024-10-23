@@ -1,20 +1,33 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { LocationController } from './location.controller';
+import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
 import { LocationService } from './location.service';
+import { CreateLocationDto } from './dto/create-location.dto';  // Certifique-se de importar o DTO correto
 
-describe('LocationController', () => {
-  let controller: LocationController;
+@Controller('locations')
+export class LocationController {
+  constructor(private readonly locationService: LocationService) {}
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [LocationController],
-      providers: [LocationService],
-    }).compile();
+  @Post()
+  create(@Body() createLocationDto: CreateLocationDto) {
+    return this.locationService.create(createLocationDto);
+  }
 
-    controller = module.get<LocationController>(LocationController);
-  });
+  @Get()
+  findAll() {
+    return this.locationService.findAll();
+  }
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
-  });
-});
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.locationService.findOne(+id);
+  }
+
+  @Put(':id')
+  update(@Param('id') id: string, @Body() updateLocationDto: any) {
+    return this.locationService.update(+id, updateLocationDto);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.locationService.remove(+id);
+  }
+}

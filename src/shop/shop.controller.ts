@@ -1,34 +1,32 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
 import { ShopService } from './shop.service';
-import { CreateShopDto } from './dto/create-shop.dto';
-import { UpdateShopDto } from './dto/update-shop.dto';
 
-@Controller('shop')
+@Controller('shops')
 export class ShopController {
-  constructor(private readonly shopService: ShopService) {}
-
-  @Post()
-  create(@Body() createShopDto: CreateShopDto) {
-    return this.shopService.create(createShopDto);
-  }
+  constructor(private shopService: ShopService) {}
 
   @Get()
-  findAll() {
-    return this.shopService.findAll();
+  async getAllShops() {
+    return this.shopService.getAllShops();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.shopService.findOne(+id);
+  async getShopById(@Param('id') id: number) {
+    return this.shopService.getShopById(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateShopDto: UpdateShopDto) {
-    return this.shopService.update(+id, updateShopDto);
+  @Post()
+  async createShop(@Body() data: any) {
+    return this.shopService.createShop(data);
+  }
+
+  @Put(':id')
+  async updateShop(@Param('id') id: number, @Body() data: any) {
+    return this.shopService.updateShop(id, data);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.shopService.remove(+id);
+  async deleteShop(@Param('id') id: number) {
+    return this.shopService.deleteShop(id);
   }
 }
