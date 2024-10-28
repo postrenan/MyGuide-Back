@@ -1,0 +1,10 @@
+services:
+  pj2-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "4300:3000"
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+   
