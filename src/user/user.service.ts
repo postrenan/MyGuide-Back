@@ -15,16 +15,27 @@ export class UserService {
   }
 
   async createUser(data: CreateUserDto) {
+    // Verifica se o e-mail já existe
+    const existingUser = await this.prisma.user.findUnique({
+      where: { email: data.email },
+    });
+    
+    if (existingUser) {
+      throw new Error('E-mail já cadastrado.');
+    }
+    
+    // Se não existe, cria o usuário
     return this.prisma.user.create({
       data: {
         email: data.email,
         password: data.password,
         name: data.name,
         username: data.username,
-        birthday: data.birthday,
+        birthday: new Date(data.birthday),
       },
     });
   }
+  
   
   async updateUser(id: number, data: any) {
     return this.prisma.user.update({ where: { id }, data });
