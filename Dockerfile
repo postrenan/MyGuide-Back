@@ -9,6 +9,8 @@ RUN npm install
 
 COPY . /usr/src/app
 
+RUN npx prisma migrate prod --name init
+
 RUN npx prisma generate
 
 RUN npm run build
