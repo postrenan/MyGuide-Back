@@ -5,12 +5,7 @@ services:
       dockerfile: Dockerfile
     environment:
       DATABASE_URL: ${DATABASE_URL}
-    networks:
-      - my_guide
     ports:
       - "4000:3000"
     restart: unless-stopped
-    
-networks:
-  my_guide:
-    external: true
+    network_mode: bridge
