@@ -13,4 +13,4 @@ services:
     
 networks:
   my_guide:
-    external: true
+    driver: bridge
