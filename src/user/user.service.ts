@@ -14,6 +14,10 @@ export class UserService {
     return this.prisma.user.findUnique({ where: { id } });
   }
 
+  async getUserByEmail(email: string) {
+    return this.prisma.user.findUnique({ where: { email } });
+  }
+
   async createUser(data: CreateUserDto) {
     // Verifica se o e-mail já existe
     const existingUser = await this.prisma.user.findUnique({
