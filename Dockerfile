@@ -1,4 +1,4 @@
-FROM node:18.17.1
+FROM node:20
 
 WORKDIR /usr/src/app
 
@@ -9,7 +9,7 @@ RUN npm install
 
 COPY . /usr/src/app
 
-RUN npx prisma migrate prod --name init
+RUN npx prisma migrate dev --name init
 
 RUN npx prisma generate
 
