@@ -14,13 +14,8 @@ export class UserController {
     return this.userService.getAllUsers();
   }
 
-  @Get(':id')
-  async getUserById(@Param('id') id: number) {
-    return this.userService.getUserById(id);
-  }
-
   @Get(':email')
-  async getUserByMail(@Param('email') email: string) {
+  async getUserByEmail(@Param('email') email: string) {
     return this.userService.getUserByEmail(email);
   }
 
