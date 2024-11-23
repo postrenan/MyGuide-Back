@@ -15,7 +15,6 @@ export class UserController {
   }
 
   @Get(':id')
-  
   async getUserById(@Param('id') id: number) {
     return this.userService.getUserById(id);
   }
