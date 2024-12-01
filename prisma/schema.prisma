@@ -55,13 +55,13 @@ model Shop {
   location   Location  @relation(fields: [locationId], references: [id])
   categoryId Int
   category   Category  @relation(fields: [categoryId], references: [id])
-  price      String
-  products   Int
-  pics       Int
+  price      String?
+  products   Int?
+  pics       Int?
   openTime   DateTime
   closeTime  DateTime
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+  updatedAt  DateTime?  @updatedAt
   deletedAt  DateTime?
   admins     Admin[]
   favorites  Favorite[]
