@@ -19,39 +19,44 @@ export class ShopService {
 
 
   async createShop(data: any) {
-    // Primeiro, cria o Location com os dados de endereço
-    const location = await this.prisma.location.create({
-      data: {
-        street: data.street,
-        number: data.number,
-        city: data.city,
-        state: data.state,
-        country: data.country,
-        complement: data.complement,
-      },
-    });
+    try {
   
-    // Depois, cria o Shop e referencia o Location recém-criado
-    return this.prisma.shop.create({
-      data: {
-        email: data.email,
-        name: data.name,
-        description: data.description,
-        price: data.price,
-        products: data.products,
-        openTime: new Date(data.openTime),
-        closeTime: new Date(data.closeTime),
-        password: data.password,
-        location: {
-          connect: { id: location.id }, // Aqui estamos associando o Shop com o Location
-        },
-        category: {
-          connect: { id: data.categoryId }, // Assume-se que o ID da categoria já existe
-        },
-      },
-    });
+      return this.prisma.$transaction(async (prisma) => {
+        const location = await prisma.location.create({
+          data: {
+            street: data.street,
+            number: data.number,
+            city: data.city,
+            state: data.state,
+            country: data.country,
+            complement: data.complement,
+          },
+        });
+  
+        return prisma.shop.create({
+          data: {
+            email: data.email,
+            name: data.name,
+            description: data.description,
+            price: data.price,
+            products: data.products,
+            openTime: new Date(data.openTime),
+            closeTime: new Date(data.closeTime),
+            password: data.password,
+            location: {
+              connect: { id: location.id },
+            },
+            category: {
+              connect: { id: data.categoryId },
+            },
+          },
+        });
+      });
+    } catch (error) {
+      console.error('Error creating shop:', error);
+      throw new Error('Failed to create shop');
+    }
   }
-
 
   async updateShop(id: number, data: any) {
     return this.prisma.shop.update({ where: { id }, data });
