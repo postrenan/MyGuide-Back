@@ -9,9 +9,15 @@ export class ShopService {
     return this.prisma.shop.findMany({ include: { location: true, category: true } });
   }
 
+  async getShopByName(name: string) {
+    return this.prisma.shop.findUnique({ where: { name }, include: { location: true, category: true } });
+  }
+
   async getShopById(id: number) {
     return this.prisma.shop.findUnique({ where: { id }, include: { location: true, category: true } });
   }
+
+
   async createShop(data: any) {
     // Primeiro, cria o Location com os dados de endereço
     const location = await this.prisma.location.create({
@@ -46,7 +52,7 @@ export class ShopService {
     });
   }
 
-  
+
   async updateShop(id: number, data: any) {
     return this.prisma.shop.update({ where: { id }, data });
   }

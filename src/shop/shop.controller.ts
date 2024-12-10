@@ -12,6 +12,12 @@ export class ShopController {
     return this.shopService.getAllShops();
   }
 
+
+  @Get(':name')
+  async getShopByName(@Param('name') name: string) {
+    return this.shopService.getShopByName(name);
+  }
+
   @Get(':id')
   async getShopById(@Param('id') id: number) {
     return this.shopService.getShopById(id);
