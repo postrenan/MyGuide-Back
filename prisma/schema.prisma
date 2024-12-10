@@ -50,6 +50,8 @@ model Location {
 model Shop {
   id         Int       @id @default(autoincrement())
   name       String  @unique
+  email      String    @unique
+  password   String
   description String
   locationId Int
   location   Location  @relation(fields: [locationId], references: [id])
@@ -57,7 +59,6 @@ model Shop {
   category   Category  @relation(fields: [categoryId], references: [id])
   price      String?
   products   Int?
-  pics       Int?
   openTime   DateTime
   closeTime  DateTime
   createdAt  DateTime  @default(now())
