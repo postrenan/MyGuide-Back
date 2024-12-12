@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'prisma/prisma.service';
+import { CreateReviewDto } from './dto/create-review.dto';
 
 @Injectable()
 export class ReviewService {
@@ -13,8 +14,33 @@ export class ReviewService {
     return this.prisma.review.findUnique({ where: { id }, include: { user: true, shop: true } });
   }
 
-  async createReview(data: any) {
-    return this.prisma.review.create({ data });
+  async createReview(userId: number, createReviewDto: CreateReviewDto) {
+    return this.prisma.review.create({
+      data: {
+        title: createReviewDto.title,
+        description: createReviewDto.description,
+        picture: createReviewDto.picture,
+        user: {
+          connect: { id: userId },
+        },
+        shop: {
+          connect: { id: createReviewDto.shopId },
+        },
+      },
+    });
+  }
+
+  async getUserReviews(userId: number) {
+    return this.prisma.review.findMany({ where: { userId } });
+  }
+
+  async createReviewUser(userId: number, createReviewDto: CreateReviewDto) {
+    return this.prisma.review.create({
+      data: {
+        ...createReviewDto,
+        userId,
+      },
+    });
   }
 
   async updateReview(id: number, data: any) {

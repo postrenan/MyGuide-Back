@@ -13,6 +13,10 @@ export class FavoriteService {
     return this.prisma.favorite.findUnique({ where: { id }, include: { user: true, shop: true } });
   }
 
+  async getFavoriteByUser(email: string) {
+    return this.prisma.favorite.findUnique({ where: { email }, include: { user: true, shop: true } });
+  }
+
   async createFavorite(data: any) {
     return this.prisma.favorite.create({ data });
   }
