@@ -15,20 +15,26 @@ export class ReviewService {
   }
 
   async createReview(userId: number, createReviewDto: CreateReviewDto) {
-    return this.prisma.review.create({
-      data: {
-        title: createReviewDto.title,
-        description: createReviewDto.description,
-        picture: createReviewDto.picture,
-        user: {
-          connect: { id: userId },
+    try {
+      return await this.prisma.review.create({
+        data: {
+          title: createReviewDto.title,
+          description: createReviewDto.description,
+          picture: createReviewDto.picture,
+          user: {
+            connect: { id: userId },
+          },
+          shop: {
+            connect: { id: createReviewDto.shopId },
+          },
         },
-        shop: {
-          connect: { id: createReviewDto.shopId },
-        },
-      },
-    });
+      });
+    } catch (error) {
+      console.error('Erro ao criar avaliação:', error);
+      throw new Error('Não foi possível criar a avaliação.');
+    }
   }
+  
 
   async getUserReviews(userId: number) {
     return this.prisma.review.findMany({ where: { userId } });
